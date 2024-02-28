@@ -27,6 +27,32 @@ function RichTextEditor() {
         handleFormat('hiliteColor', color);
     };
 
+    const download = () => {
+        const content = contentRef.current.innerHTML;
+        const blob = new Blob([content], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'content.html';
+        a.click();
+    }
+
+    const uploadHTML = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'text/html';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                contentRef.current.innerHTML = content;
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    }
+
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -81,6 +107,10 @@ function RichTextEditor() {
                 <input type="color" value={fontColor} onChange={(e) => handleFontColorChange(e.target.value)} />
                 <input type="color" value={bgColor} onChange={(e) => handleBgColorChange(e.target.value)} />
                 <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e)} />
+
+                <button onClick={() => download()}>Download Content</button>
+                <button onClick={() => uploadHTML()}>Upload Content</button>
+
 
 
 
