@@ -3,7 +3,7 @@ import './App.css'
 
 import RichTextEditor from './components/RichTextEditor'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 
 function App() {
