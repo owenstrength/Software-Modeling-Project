@@ -171,7 +171,6 @@ function RichTextEditor() {
             }
             table.appendChild(tr);
         }
-
         contentRef.current.appendChild(table);
     }
 
