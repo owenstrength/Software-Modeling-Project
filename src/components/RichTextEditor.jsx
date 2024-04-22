@@ -239,7 +239,6 @@ function RichTextEditor() {
                         color: fontColor,
                         fontSize: `${fontSize}px`,
                     }}
-                    onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
                 />
             </div>
         </>
