@@ -242,10 +242,10 @@ const Document = forwardRef((_props, ref) => {
                             backgroundColor: bgColor,
                             color: fontColor,
                             fontSize: `${fontSize}px`,
+                            display: 'none',
                         }}
                     />
-                    {//<Page ref={ref} bgColor={bgColor} fontColor={fontColor} fontSize={fontSize} />
-                    }
+                    <Page ref={ref} bgColor={bgColor} fontColor={fontColor} fontSize={fontSize} />
                 </div>
             </>
         </>
