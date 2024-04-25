@@ -1,7 +1,6 @@
-//import { useState } from 'react'
 import './App.css'
 
-import RichTextEditor from './components/RichTextEditor'
+import Document from './components/Document'
 
 import { useState } from 'react'
 import './App.css'
@@ -9,6 +8,7 @@ import './App.css'
 function App() {
   const [editorCount, setEditorCount] = useState(1)
 
+  // MDI handlers
   const handleAddEditor = () => {
     setEditorCount(prevCount => prevCount + 1)
   }
@@ -29,7 +29,7 @@ function App() {
       <div style={{ flexDirection: 'row', display: 'flex' }}>
         {Array.from({ length: editorCount }).map((_, index) => (
           <div key={index}>
-            <RichTextEditor />
+            <Document />
           </div>
         ))}
       </div>

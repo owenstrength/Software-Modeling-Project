@@ -1,8 +1,9 @@
-import { useRef, useEffect, useState } from 'react';
-import './RichTextEditor.css';
+import { useEffect, useState, useRef, forwardRef } from 'react';
+import Page from './Page';
+import './Document.css';
 
-function RichTextEditor() {
-    const contentRef = useRef(null);
+const Document = forwardRef((_props, ref) => {
+    const contentRef = useRef();
     const [fontSize, setFontSize] = useState(16);
     const [fontColor, setFontColor] = useState('#000000');
     const [bgColor, setBgColor] = useState('#ffffff');
@@ -20,14 +21,7 @@ function RichTextEditor() {
 
     const [title, setTitle] = useState(generateRandomString());
 
-    // on start load content from cache
-    useEffect(() => {
-        const content = localStorage.getItem(title);
-        if (content) {
-            contentRef.current.innerHTML = content;
-        }
-    }, []);
-
+    // Main Format Function
     const handleFormat = (command, value = null) => {
         document.execCommand(command, false, value);
         contentRef.current.focus();
@@ -57,6 +51,7 @@ function RichTextEditor() {
         }
     };
 
+    // Document Class
     const loadCache = () => {
         const content = localStorage.getItem(title);
         if (content) {
@@ -90,6 +85,8 @@ function RichTextEditor() {
         input.click();
     }
 
+
+    // Image Class
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -150,8 +147,7 @@ function RichTextEditor() {
         imgElement.addEventListener('mousedown', startResizing);
     }
 
-    // Implement the startResizing, resize, and stopResizing functions based on your requirements
-
+    // Table Class
     const uploadTable = () => {
         const table = document.createElement('table');
         table.style.borderCollapse = 'collapse';
@@ -174,7 +170,7 @@ function RichTextEditor() {
         contentRef.current.appendChild(table);
     }
 
-
+    // react stuff - not important
     useEffect(() => {
         if (contentRef.current.innerHTML === '') {
             handleFormat('justifyLeft');
@@ -187,6 +183,14 @@ function RichTextEditor() {
 
 
     }, [title]);
+
+    // on start load content from cache
+    useEffect(() => {
+        const content = localStorage.getItem(title);
+        if (content) {
+            contentRef.current.innerHTML = content;
+        }
+    }, []);
 
     return (
         <>
@@ -224,24 +228,30 @@ function RichTextEditor() {
                 <button onClick={() => loadCache()}>Load Cached</button>
                 <button onClick={() => handleImageResize(contentRef.current.querySelector('img'))}>Resize Image</button>
             </div>
-            <div className='PageContainer'>
-                <div
-                    contentEditable={true}
-                    ref={contentRef}
-                    style={{
-                        border: '1px solid #ccc',
-                        padding: '5px',
-                        aspectRatio: '8.5 / 11',
-                        width: '110%',
-                        margin: '20px',
-                        backgroundColor: bgColor,
-                        color: fontColor,
-                        fontSize: `${fontSize}px`,
-                    }}
-                />
-            </div>
+            <>
+                <div className='PageContainer'>
+                    <div
+                        contentEditable={true}
+                        ref={contentRef}
+                        style={{
+                            border: '1px solid #ccc',
+                            padding: '5px',
+                            aspectRatio: '8.5 / 11',
+                            width: '110%',
+                            margin: '20px',
+                            backgroundColor: bgColor,
+                            color: fontColor,
+                            fontSize: `${fontSize}px`,
+                            display: 'none'
+                        }}
+                    />
+                    <Page ref={ref} bgColor={bgColor} fontColor={fontColor} fontSize={fontSize} />
+                </div>
+            </>
         </>
     );
-}
 
-export default RichTextEditor;
+})
+
+Document.displayName = 'Document';
+export default Document;
